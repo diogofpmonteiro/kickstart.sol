@@ -4,9 +4,7 @@ const compiledFactory = require("./build/CampaignFactory.json");
 
 const provider = new HDWalletProvider(
   "trigger slim someone measure outside flush never high tide bounce cabbage possible",
-  // remember to change this to your own phrase!
   "https://rinkeby.infura.io/v3/1f9973ec86b141bc882ffffe36c855eb"
-  // remember to change this to your own endpoint!
 );
 
 const web3 = new Web3(provider);
