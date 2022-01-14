@@ -3,6 +3,7 @@ const Web3 = require("web3");
 const compiledFactory = require("./build/CampaignFactory.json");
 
 const provider = new HDWalletProvider(
+  // don't be cheeky and steal my rinkeby eth pls
   "trigger slim someone measure outside flush never high tide bounce cabbage possible",
   "https://rinkeby.infura.io/v3/1f9973ec86b141bc882ffffe36c855eb"
 );

@@ -8,6 +8,7 @@ if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
   web3 = new Web3(window.ethereum);
 } else {
   // We are on the local server *OR* the user is not running metamask
+  // create our own provider with infura
   const provider = new Web3.providers.HttpProvider("https://rinkeby.infura.io/v3/1f9973ec86b141bc882ffffe36c855eb");
   web3 = new Web3(provider);
 }

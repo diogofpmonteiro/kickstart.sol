@@ -1,6 +1,8 @@
-// import React, { Component } from "react";
 import { useEffect, useState } from "react";
 import factory from "./../ethereum/factory";
+import { Card, Button } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
+import Layout from "../components/Layout";
 
 const HomePage = () => {
   const [campaigns, setCampaigns] = useState([]);
@@ -12,19 +14,28 @@ const HomePage = () => {
     };
     getCampaignList();
   }, []);
+  // console.log("campaigns list -", campaigns);
 
-  //   console.log("campaigns list -", campaigns);
+  const renderCampaigns = () => {
+    const items = campaigns.map((address) => {
+      return {
+        header: address,
+        description: <a>View Campaign</a>,
+        fluid: true,
+      };
+    });
+    // console.log(items);
+    return <Card.Group items={items} />;
+  };
+
   return (
-    <>
-      <div>Home</div>
-      <div>
-        <div>Campaigns list: </div>
-        {campaigns.length > 0 &&
-          campaigns.map((eachCampaign) => {
-            return eachCampaign;
-          })}
-      </div>
-    </>
+    <div className='main-container'>
+      <Layout>
+        <h3>Open Campaigns</h3>
+        <Button floated='right' content='Create Campaign' icon='add circle' secondary />
+        <div>{renderCampaigns()}</div>
+      </Layout>
+    </div>
   );
 };
 
