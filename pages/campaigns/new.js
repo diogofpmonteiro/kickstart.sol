@@ -60,6 +60,7 @@ const NewCampaign = () => {
           <Button loading={isLoading} disabled={isLoading} secondary>
             Create
           </Button>
+          {isLoading && <p>Please wait until the transaction finishes executing.</p>}
         </Form>
       </Layout>
     </>

@@ -21,7 +21,7 @@ const HomePage = () => {
       return {
         header: address,
         description: (
-          <Link href='' route={`/campaigns/${address}`}>
+          <Link route={`/campaigns/${address}`}>
             <a>View Campaign</a>
           </Link>
         ),
@@ -32,15 +32,13 @@ const HomePage = () => {
   };
 
   return (
-    <div className='main-container'>
-      <Layout>
-        <h3>Open Campaigns</h3>
-        <Link href='' route='/campaigns/new'>
-          <Button floated='right' content='Create Campaign' icon='add circle' secondary />
-        </Link>
-        <div>{renderCampaigns()}</div>
-      </Layout>
-    </div>
+    <Layout>
+      <h3>Open Campaigns</h3>
+      <Link route='/campaigns/new'>
+        <Button floated='right' content='Create Campaign' icon='add circle' secondary />
+      </Link>
+      <div>{renderCampaigns()}</div>
+    </Layout>
   );
 };
 
