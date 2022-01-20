@@ -10,13 +10,15 @@ const RequestIndex = ({ address }) => {
   const campaign = CampaignInstance(address);
   const [requestCount, setRequestCount] = useState("");
   const [requests, setRequests] = useState([]);
+  const [approversCount, setApproversCount] = useState(0);
 
   // since in solidity we cannot return arrays of structs we need to do this workaround so we can list our requests
   useEffect(() => {
     const getRequests = async () => {
       const requestCountVar = await campaign.methods.getRequestsCount().call();
+      const approversCountVar = await campaign.methods.approversCount().call();
       const requestsVar = await Promise.all(
-        Array(requestCount)
+        Array(parseInt(requestCountVar))
           // fill an array with our request results
           .fill()
           // map through the array
@@ -26,6 +28,7 @@ const RequestIndex = ({ address }) => {
       );
       setRequestCount(requestCountVar);
       setRequests(requestsVar);
+      setApproversCount(approversCountVar);
     };
     getRequests();
   }, []);
@@ -34,7 +37,7 @@ const RequestIndex = ({ address }) => {
 
   const renderRows = () => {
     return requests.map((request, index) => {
-      return <RequestRow key={index} request={request} address={address} />;
+      return <RequestRow key={index} id={index} request={request} address={address} approversCount={approversCount} />;
     });
   };
 
@@ -46,7 +49,9 @@ const RequestIndex = ({ address }) => {
       <h3>Requests</h3>
       <Link route={`/campaigns/${address}/requests/new`}>
         <a>
-          <Button secondary>Add Request</Button>
+          <Button secondary floated='right' style={{ marginBottom: 10 }}>
+            Add Request
+          </Button>
         </a>
       </Link>
       <Table>
@@ -54,7 +59,7 @@ const RequestIndex = ({ address }) => {
           <Row>
             <HeaderCell>ID</HeaderCell>
             <HeaderCell>Description</HeaderCell>
-            <HeaderCell>Amount</HeaderCell>
+            <HeaderCell>Amount in ether</HeaderCell>
             <HeaderCell>Recipient</HeaderCell>
             <HeaderCell>Approval Count</HeaderCell>
             <HeaderCell>Approve</HeaderCell>
@@ -63,6 +68,7 @@ const RequestIndex = ({ address }) => {
         </Header>
         <Body>{renderRows()}</Body>
       </Table>
+      <div>Found {requestCount} requests. </div>
     </Layout>
   );
 };

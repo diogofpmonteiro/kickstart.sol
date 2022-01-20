@@ -93,7 +93,6 @@ describe("Campaigns", () => {
       });
     // get our request struct (object)
     const request = await campaign.methods.requests(0).call();
-    // console.log(request);
     assert.strictEqual("Buy batteries", request.description);
   });
 
@@ -123,7 +122,6 @@ describe("Campaigns", () => {
     // convert it to a number in ether
     balance = web3.utils.fromWei(balance, "ether");
     balance = parseFloat(balance);
-    // console.log(balance);
     assert(balance > 104);
   });
 });

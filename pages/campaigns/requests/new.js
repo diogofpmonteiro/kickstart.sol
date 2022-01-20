@@ -22,12 +22,9 @@ const NewRequest = ({ address }) => {
 
     try {
       const accounts = await web3.eth.getAccounts();
-      const request = await campaign.methods
-        .createRequest(requestDescription, web3.utils.toWei(requestValue, "ether"), requestRecipient)
-        .send({
-          from: accounts[0],
-        });
-      console.log(request);
+      await campaign.methods.createRequest(requestDescription, web3.utils.toWei(requestValue, "ether"), requestRecipient).send({
+        from: accounts[0],
+      });
     } catch (error) {
       setErrorMessage(error.message);
     }
