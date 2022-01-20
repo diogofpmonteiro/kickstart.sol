@@ -21,6 +21,13 @@ const NewRequest = ({ address }) => {
     const campaign = CampaignInstance(address);
 
     try {
+      const accounts = await web3.eth.getAccounts();
+      const request = await campaign.methods
+        .createRequest(requestDescription, web3.utils.toWei(requestValue, "ether"), requestRecipient)
+        .send({
+          from: accounts[0],
+        });
+      console.log(request);
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -33,8 +40,11 @@ const NewRequest = ({ address }) => {
 
   return (
     <Layout>
-      <h3>Create a Request</h3>
+      <Link route={`/campaigns/${address}/requests`}>
+        <a>Back</a>
+      </Link>
 
+      <h3>Create a Request</h3>
       <Form onSubmit={onFormSubmit}>
         <Form.Field>
           <label>Request description</label>
@@ -71,11 +81,6 @@ const NewRequest = ({ address }) => {
         </Button>
         {isLoading && <p>Please wait until the transaction finishes executing.</p>}
       </Form>
-      <Link route={`/campaigns/${address}/requests`}>
-        <a>
-          <Button secondary>Requests Page</Button>
-        </a>
-      </Link>
     </Layout>
   );
 };
