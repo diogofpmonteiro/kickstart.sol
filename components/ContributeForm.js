@@ -3,8 +3,10 @@ import { Form, Button, Input, Message } from "semantic-ui-react";
 import { useState } from "react";
 import Campaign from "./../ethereum/campaign";
 import web3 from "../ethereum/web3";
+import { useRouter } from "next/router";
 
 const ContributeForm = ({ address }) => {
+  const router = useRouter();
   const [contributionValue, setContributionValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -23,13 +25,15 @@ const ContributeForm = ({ address }) => {
         from: accounts[0],
         value: web3.utils.toWei(contributionValue, "ether"),
       });
+
+      router.reload(window.location.pathname);
     } catch (error) {
       setErrorMessage(error.message);
     }
 
     setTimeout(() => {
       setErrorMessage("");
-    }, 4000);
+    }, 8000);
 
     setIsLoading(false);
     setContributionValue("");
@@ -64,6 +68,11 @@ const ContributeForm = ({ address }) => {
       </Form>
     </>
   );
+};
+
+ContributeForm.getInitialProps = async (props) => {
+  const { address } = props.query;
+  return { address };
 };
 
 export default ContributeForm;

@@ -1,26 +1,24 @@
 import "semantic-ui-css/semantic.min.css";
 import Layout from "../../components/Layout";
 import ContributeForm from "../../components/ContributeForm";
-import { useRouter } from "next/router";
 import CampaignInstance from "../../ethereum/campaign";
 import { useEffect, useState } from "react";
-import { Card, Grid } from "semantic-ui-react";
+import { Card, Grid, Button } from "semantic-ui-react";
 import web3 from "../../ethereum/web3";
+import { Link } from "../../routes";
 
-const CampaignShow = () => {
-  const router = useRouter();
-  const campaignInstance = CampaignInstance(router.query["address"]);
+const CampaignShow = ({ address }) => {
+  const campaignInstance = CampaignInstance(address);
   const [campaignSummary, setCampaignSummary] = useState({});
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    if (!router.isReady) return;
     const getSummary = async () => {
       const response = await campaignInstance.methods.getSummary().call();
 
       // redefine response object and assign names to the keys
       const summary = {
-        address: router.query.address,
+        address,
         minimumContribution: response[0],
         balance: response[1],
         requestsCount: response[2],
@@ -77,13 +75,29 @@ const CampaignShow = () => {
     <Layout>
       <h3>Show campaigns</h3>
       <Grid>
-        <Grid.Column width={10}>{loaded && renderSummary()}</Grid.Column>
-        <Grid.Column width={6}>
-          <ContributeForm address={campaignSummary.address} />
-        </Grid.Column>
+        <Grid.Row>
+          <Grid.Column width={10}>{loaded && renderSummary()}</Grid.Column>
+          <Grid.Column width={6}>
+            <ContributeForm address={address} />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column>
+            <Link route={`/campaigns/${address}/requests/`}>
+              <a>
+                <Button secondary>View Requests</Button>
+              </a>
+            </Link>
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </Layout>
   );
+};
+
+CampaignShow.getInitialProps = async (props) => {
+  const { address } = props.query;
+  return { address };
 };
 
 export default CampaignShow;

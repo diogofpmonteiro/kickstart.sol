@@ -29,7 +29,7 @@ const NewCampaign = () => {
 
     setTimeout(() => {
       setErrorMessage("");
-    }, 4000);
+    }, 6000);
     setIsLoading(false);
   };
 
